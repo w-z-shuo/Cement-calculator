@@ -3,58 +3,68 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>水泥运输与托盘/车辆计算器</title>
+  <title>水泥装载分配计算器</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>水泥运输与托盘/车辆计算器</h1>
+    <h1 style="text-align: center;">水泥装载分配计算器</h1>
 
     <form id="calc-form">
       <div class="grid">
         <label>
-          总水泥重量 n（吨）
-          <input type="number" step="0.01" min="0" id="totalTons" placeholder="例如：48" required>
+          水泥总重量（吨）
+          <input type="number" step="0.01" min="0" id="totalTons" required>
         </label>
 
         <label>
-          每袋水泥 m（千克）
-          <input type="number" step="1" min="1" id="bagWeightKg" placeholder="例如：50" required>
+          每袋水泥重量（千克）
+          <input type="number" step="1" min="1" id="bagWeightKg" required>
         </label>
 
         <label>
           单个托盘自重（千克）
-          <input type="number" step="0.1" min="0" id="palletWeightKg" placeholder="例如：25" required>
+          <input type="number" step="0.1" min="0" id="palletWeightKg" required>
         </label>
 
         <label>
-          单种托盘动载量（吨）
-          <input type="number" step="0.1" min="0" id="palletDynamicLoad" placeholder="例如：1.5" required>
+          单个托盘动载量（吨）
+          <input type="number" step="0.1" min="0" id="palletDynamicLoad" required>
         </label>
 
         <label>
-          单种车辆载货量（吨）
-          <input type="number" step="0.1" min="0" id="truckCapacity" placeholder="例如：10" required>
+          托盘长度（米）
+          <input type="number" step="0.01" min="0.01" id="palletLenM" required>
         </label>
 
-        <label class="inline">
-          初次装载上限占动载量比例（建议90%）
-          <input type="number" id="initialFillPercent" min="50" max="100" step="1" value="90">
-          <span>%</span>
+        <label>
+          托盘宽度（米）
+          <input type="number" step="0.01" min="0.01" id="palletWidM" required>
         </label>
 
-        <label class="inline">
-          允许重新分配未满托盘（阈值：每托盘小于3袋）
-          <input type="checkbox" id="enableRedistribution" checked>
+        <label class="sr-only">
+          <span>默认车辆载重量（吨）</span>
+          <input type="number" step="0.1" min="0.1" id="defaultTruckCapacity">
         </label>
+
+        <input type="hidden" id="initialFillPercent" value="90">
+
+        <input type="hidden" id="enableRedistribution" value="true">
       </div>
 
       <div class="actions">
-        <button type="submit">计算</button>
-        <button type="button" id="fillDemo">填充示例</button>
+        <button type="submit">开始分配</button>
         <button type="reset">重置</button>
       </div>
     </form>
+
+    <div id="trucksSection" class="trucks-section" hidden>
+      <div class="actions">
+        <button id="addTruckBtn" type="button">添加车辆</button>
+        <div id="remainingInfo" class="remaining"></div>
+      </div>
+      <div id="trucksList"></div>
+    </div>
 
     <div id="results" class="results" aria-live="polite"></div>
   </div>
